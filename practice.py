@@ -2,7 +2,13 @@ import cv2 as cv
 import numpy as np
 
 # Going to use openCV to get video from my webcam
-capture = cv.VideoCapture(1, cv.CAP_AVFOUNDATION)
+capture = cv.VideoCapture(0, cv.CAP_AVFOUNDATION)
+
+# cv.CascadeClassifier: a class from openCV to load pre-trained classifier
+# cv.data.haarcascades gives us the path to the directory for the xml files
+# we can use pre-trained face detection model (Haar Cascade)
+face_cascade = cv.CascadeClassifier(
+    cv.data.haarcascades + "haarcascade_frontalface_default.xml")
 
 if not capture.isOpened():
     print("Error: Could not open video capture.")
@@ -37,10 +43,23 @@ while True:
         if area > 500:
             # find the box for the contour
             x, y, w, h = cv.boundingRect(contour)
-            cv.rectangle(frame, (x, y), (x+w), (y+h), (0, 255, 0), 2)
+            cv.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+    # Convert the frame to grayscale so we can detect our face(player)
+    gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+    # Detect the face
+    faces = face_cascade.detectMultiScale(
+        gray_frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+    # Draw rectangles around the faces we detect
+    for (x, y, w, h) in faces:
+        # draw a blue box around detected faces
+        cv.rectangle(frame, (x, y), (x+w, y + h), (255, 0, 0), 2)
 
     # show the frame with detected ball
-    cv.imshow("Basketball Detected", frame)
+    cv.imshow("Player & Basketball Detected", frame)
+    cv.imshow("Mask", mask)  # we can show the mask for debugging
 
     # Q to quit
     if cv.waitKey(1) & 0xFF == ord('q'):
