@@ -37,13 +37,16 @@ while True:
         tracked_player = track_player(frame)
 
     # Detect basketballs
-    basketballs = detect_basketball(frame)
+    basketballs, basketball_masks = detect_basketball(frame)
     for (x, y, w, h) in basketballs:
         cv.rectangle(frame, (x, y), (x + w, y + h),
                      (0, 0, 255), 2)  # Red box for basketball
 
     # Display the frame
     cv.imshow("Basketball Shot Tracker", frame)
+
+    # show basketball mask
+    #cv.imshow("Basketball Mask", basketball_masks)
 
     # Press 'q' to quit
     if cv.waitKey(1) & 0xFF == ord('q'):
