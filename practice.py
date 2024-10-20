@@ -2,7 +2,7 @@ import cv2 as cv
 import numpy as np
 
 # Going to use openCV to get video from my webcam
-capture = cv.VideoCapture(0, cv.CAP_AVFOUNDATION)
+capture = cv.VideoCapture(1, cv.CAP_AVFOUNDATION)
 
 # cv.CascadeClassifier: a class from openCV to load pre-trained classifier
 # cv.data.haarcascades gives us the path to the directory for the xml files
@@ -59,7 +59,7 @@ while True:
 
     # show the frame with detected ball
     cv.imshow("Player & Basketball Detected", frame)
-    cv.imshow("Mask", mask)  # we can show the mask for debugging
+    # cv.imshow("Mask", mask)  # we can show the mask for debugging
 
     # Q to quit
     if cv.waitKey(1) & 0xFF == ord('q'):
