@@ -2,8 +2,7 @@ import cv2 as cv
 import numpy as np
 
 # Going to use openCV to get video from my webcam
-# start the phone camera
-capture = cv.VideoCapture(0, cv.CAP_AVFOUNDATION)
+capture = cv.VideoCapture(1, cv.CAP_AVFOUNDATION)
 
 if not capture.isOpened():
     print("Error: Could not open video capture.")
